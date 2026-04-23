@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}LUMÈNE — Одежда и обувь{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero__text">
+        <p class="hero__tag">Новая коллекция · Весна 2026</p>
+        <h1 class="hero__title">Стиль,<br>который<br><em>говорит</em><br>за вас.</h1>
+        <p class="hero__desc">Тщательно отобранная одежда и обувь для тех, кто ценит качество и изысканность в каждой детали.</p>
+        <div class="hero__actions">
+            <a href="#popular" class="btn btn-primary">Смотреть коллекцию</a>
+            <a href="#new" class="btn btn-outline">Новинки</a>
+        </div>
+    </div>
+    <div class="hero__visual">
+        <img src="{% static 'images/hero.jpg' %}" alt="Коллекция" onerror="this.style.display='none'">
+    </div>
+</section>
+
+<!-- CATEGORIES -->
+{% if categories %}
+<section class="section">
+    <div class="section__header">
+        <h2 class="section__title">Категории</h2>
+        <a href="#" class="section__link">Все категории</a>
+    </div>
+    <div class="cat-grid">
+        {% for category in categories %}
+        <a href="{% url 'category_detail' category.slug %}" class="cat-card">
+            {% cycle 'cat-color-1' 'cat-color-2' 'cat-color-3' 'cat-color-4' as cat_color silent %}
+            <div class="cat-card__thumb {{ cat_color }}">
+                {% if category.image %}
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}"
+                         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+                {% endif %}
+                <div>
+                    <p class="cat-card__label">{{ category.name }}</p>
+                    <p class="cat-card__count">{{ category.products.count }} товаров</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- NEW PRODUCTS -->
+{% if new_products %}
+<section class="section section--white" id="new">
+    <div class="section__header">
+        <h2 class="section__title">Новинки</h2>
+        <a href="#" class="section__link">Смотреть всё</a>
+    </div>
+    <div class="prod-grid">
+        {% for product in new_products %}
+        <div class="prod-card">
+            <a href="{% url 'product_detail' product.slug %}">
+                <div class="prod-card__img">
+                    <span class="badge badge--new">NEW</span>
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                    <div class="prod-card__overlay">
+                        <button class="prod-card__add">В корзину</button>
+                    </div>
+                </div>
+            </a>
+            <p class="prod-card__brand">{{ product.category.name }}</p>
+            <p class="prod-card__name">{{ product.name }}</p>
+            <div class="prod-card__price">
+                <span class="prod-card__price-current">{{ product.price }} ₽</span>
+                {% if product.old_price %}
+                    <span class="prod-card__price-old">{{ product.old_price }} ₽</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- POPULAR PRODUCTS -->
+{% if popular_products %}
+<section class="section" id="popular">
+    <div class="section__header">
+        <h2 class="section__title">Популярное</h2>
+        <a href="#" class="section__link">Смотреть всё</a>
+    </div>
+    <div class="prod-grid">
+        {% for product in popular_products %}
+        <div class="prod-card">
+            <a href="{% url 'product_detail' product.slug %}">
+                <div class="prod-card__img">
+                    {% if product.discount_percent %}
+                        <span class="badge">-{{ product.discount_percent }}%</span>
+                    {% endif %}
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                    <div class="prod-card__overlay">
+                        <button class="prod-card__add">В корзину</button>
+                    </div>
+                </div>
+            </a>
+            <p class="prod-card__brand">{{ product.category.name }}</p>
+            <p class="prod-card__name">{{ product.name }}</p>
+            <div class="prod-card__price">
+                <span class="prod-card__price-current">{{ product.price }} ₽</span>
+                {% if product.old_price %}
+                    <span class="prod-card__price-old">{{ product.old_price }} ₽</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- BANNER -->
+<div class="banner">
+    <div>
+        <h2 class="banner__title">Весенняя распродажа</h2>
+        <p class="banner__desc">Успейте обновить гардероб — специальные цены на избранные коллекции только до конца месяца.</p>
+        <a href="#" class="btn btn-light">Смотреть предложения</a>
+    </div>
+    <div>
+        <p class="banner__discount">-40%</p>
+        <p class="banner__sub">НА ИЗБРАННОЕ</p>
+    </div>
+</div>
+
+{% endblock %}

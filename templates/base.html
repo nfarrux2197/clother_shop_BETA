@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LUMÈNE — Одежда и обувь{% endblock %}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="{% url 'home' %}" class="navbar__logo">LUMÈNE</a>
+
+    <ul class="navbar__links">
+        <li><a href="#">Женщинам</a></li>
+        <li><a href="#">Мужчинам</a></li>
+        <li><a href="#">Детям</a></li>
+        <li><a href="#">Новинки</a></li>
+        <li><a href="#">Скидки</a></li>
+    </ul>
+
+    <div class="navbar__actions">
+        {% if user.is_authenticated %}
+            <a href="#" class="navbar__icon" title="Профиль">👤</a>
+        {% else %}
+            <a href="#" class="navbar__icon" title="Войти">🔑</a>
+        {% endif %}
+        <a href="#" class="navbar__icon" title="Избранное">♡</a>
+        <button class="navbar__cart">Корзина (0)</button>
+    </div>
+</nav>
+
+<!-- MESSAGES -->
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        <div class="message message--{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- CONTENT -->
+{% block content %}
+
+{% endblock %}
+
+<!-- FOOTER -->
+<footer class="footer">
+    <span class="footer__logo">LUMÈNE</span>
+    <span>Доставка по всей России · Возврат 30 дней</span>
+    <span>© 2026 LUMÈNE. Все права защищены.</span>
+</footer>
+
+<!-- JS -->
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>
