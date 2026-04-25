@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Корзина — LUMÈNE{% endblock %}
+
+{% block content %}
+
+<section class="cat-header">
+    <div class="cat-header__inner">
+        <p class="hero__tag"><a href="{% url 'home' %}">Главная</a> → Корзина</p>
+        <h1 class="cat-header__title">Корзина</h1>
+        <p class="cat-header__count">{{ cart.total_items }} товаров</p>
+    </div>
+</section>
+
+<section class="section">
+    {% if cart.items.all %}
+        <div class="cart-layout">
+
+            <!-- ITEMS -->
+            <div class="cart-items">
+                {% for item in cart.items.all %}
+                <div class="cart-item">
+                    <div class="cart-item__img">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="cart-item__info">
+                        <p class="cart-item__category">{{ item.product.category.name }}</p>
+                        <p class="cart-item__name">{{ item.product.name }}</p>
+                        <p class="cart-item__price">{{ item.product.price }} ₽</p>
+                    </div>
+                    <div class="cart-item__qty">
+                        <span>Кол-во: {{ item.quantity }}</span>
+                    </div>
+                    <div class="cart-item__total">
+                        {{ item.total_price }} ₽
+                    </div>
+                    <a href="{% url 'remove_from_cart' item.id %}" class="cart-item__remove">✕</a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="cart-summary">
+                <h2 class="cart-summary__title">Итого</h2>
+                <div class="cart-summary__row">
+                    <span>Товаров</span>
+                    <span>{{ cart.total_items }} шт.</span>
+                </div>
+                <div class="cart-summary__row cart-summary__total">
+                    <span>Сумма</span>
+                    <span>{{ cart.total_price }} ₽</span>
+                </div>
+                <button class="btn btn-primary" style="width:100%; padding: 14px;">Оформить заказ</button>
+                <a href="{% url 'home' %}" class="btn btn-outline" style="width:100%; padding: 14px; text-align:center; margin-top: 0.8rem; display:block;">Продолжить покупки</a>
+            </div>
+
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p class="empty-state__icon">🛒</p>
+            <h2 class="empty-state__title">Корзина пуста</h2>
+            <p class="empty-state__desc">Добавьте товары чтобы продолжить!</p>
+            <a href="{% url 'home' %}" class="btn btn-primary">На главную</a>
+        </div>
+    {% endif %}
+</section>
+
+{% endblock %}

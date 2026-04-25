@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление аккаунта — LUMÈNE{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <h1 class="auth-title">Удалить аккаунт</h1>
+        <p class="auth-sub" style="color: #A32D2D;">Это действие необратимо. Все ваши данные будут удалены.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="profile-actions">
+                <a href="{% url 'profile' %}" class="btn btn-outline">Отмена</a>
+                <button type="submit" class="btn btn-primary" style="background: #C5482A;">Удалить</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

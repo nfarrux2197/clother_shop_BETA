@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль — LUMÈNE{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <h1 class="auth-title">Личный кабинет</h1>
+
+        <div class="profile-info">
+            <div class="profile-row">
+                <span class="profile-label">Логин</span>
+                <span class="profile-value">{{ user.username }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Email</span>
+                <span class="profile-value">{{ user.email|default:"Не указан" }}</span>
+            </div>
+            <div class="profile-row">
+                <span class="profile-label">Дата регистрации</span>
+                <span class="profile-value">{{ user.date_joined|date:"d.m.Y" }}</span>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'home' %}" class="btn btn-outline">На главную</a>
+            <a href="{% url 'logout' %}" class="btn btn-primary">Выйти</a>
+        </div>
+
+        <div class="profile-danger">
+            <a href="{% url 'delete_account' %}" class="delete-link">Удалить аккаунт</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

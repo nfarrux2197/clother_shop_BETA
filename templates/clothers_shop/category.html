@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} — LUMÈNE{% endblock %}
+
+{% block content %}
+
+<!-- CATEGORY HEADER -->
+<section class="cat-header">
+    <div class="cat-header__inner">
+        <p class="hero__tag"><a href="{% url 'home' %}">Главная</a> → {{ category.name }}</p>
+        <h1 class="cat-header__title">{{ category.name }}</h1>
+        <p class="cat-header__count">{{ products.count }} товаров</p>
+    </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section section--white">
+    {% if products %}
+        <div class="prod-grid">
+            {% for product in products %}
+            <div class="prod-card">
+                <a href="{% url 'product_detail' product.slug %}">
+                    <div class="prod-card__img">
+                        {% if product.is_new %}
+                            <span class="badge badge--new">NEW</span>
+                        {% elif product.discount_percent %}
+                            <span class="badge">-{{ product.discount_percent }}%</span>
+                        {% endif %}
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% endif %}
+                        <div class="prod-card__overlay">
+                            <button class="prod-card__add">В корзину</button>
+                        </div>
+                    </div>
+                </a>
+                <p class="prod-card__brand">{{ product.category.name }}</p>
+                <p class="prod-card__name">{{ product.name }}</p>
+                <div class="prod-card__price">
+                    <span class="prod-card__price-current">{{ product.price }} ₽</span>
+                    {% if product.old_price %}
+                        <span class="prod-card__price-old">{{ product.old_price }} ₽</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p class="empty-state__icon">🛍️</p>
+            <h2 class="empty-state__title">Товаров пока нет</h2>
+            <p class="empty-state__desc">В этой категории пока нет товаров. Загляните позже!</p>
+            <a href="{% url 'home' %}" class="btn btn-primary">На главную</a>
+        </div>
+    {% endif %}
+</section>
+
+{% endblock %}

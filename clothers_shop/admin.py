@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, Cart, CartItem
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug']
+    list_display = ['name', 'slug', 'gender']
     prepopulated_fields = {'slug': ('name',)}
 
 
@@ -15,3 +15,14 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
     list_editable = ['price', 'is_new', 'is_available']
+
+
+class CartItemInline(admin.TabularInline):
+    model = CartItem
+    extra = 0
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ['user', 'created_at']
+    inlines = [CartItemInline]

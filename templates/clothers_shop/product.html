@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} — LUMÈNE{% endblock %}
+
+{% block content %}
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+    <a href="{% url 'home' %}">Главная</a>
+    <span>→</span>
+    <a href="{% url 'category_detail' product.category.slug %}">{{ product.category.name }}</a>
+    <span>→</span>
+    <span>{{ product.name }}</span>
+</div>
+
+<!-- PRODUCT -->
+<section class="product-detail">
+
+    <!-- IMAGE -->
+    <div class="product-detail__img">
+        {% if product.is_new %}
+            <span class="badge badge--new">NEW</span>
+        {% elif product.discount_percent %}
+            <span class="badge">-{{ product.discount_percent }}%</span>
+        {% endif %}
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <div class="product-detail__no-img">🖼️</div>
+        {% endif %}
+    </div>
+
+    <!-- INFO -->
+    <div class="product-detail__info">
+        <p class="product-detail__category">{{ product.category.name }}</p>
+        <h1 class="product-detail__title">{{ product.name }}</h1>
+
+        <!-- PRICE -->
+        <div class="product-detail__price">
+            <span class="product-detail__price-current">{{ product.price }} ₽</span>
+            {% if product.old_price %}
+                <span class="product-detail__price-old">{{ product.old_price }} ₽</span>
+                <span class="product-detail__price-save">Выгода {{ product.discount_percent }}%</span>
+            {% endif %}
+        </div>
+
+        <!-- DESCRIPTION -->
+        {% if product.description %}
+        <div class="product-detail__desc">
+            <p>{{ product.description }}</p>
+        </div>
+        {% endif %}
+
+        <!-- STATUS -->
+        <div class="product-detail__status">
+            {% if product.is_available %}
+                <span class="status status--in">✓ В наличии</span>
+            {% else %}
+                <span class="status status--out">✗ Нет в наличии</span>
+            {% endif %}
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="product-detail__actions">
+            {% if product.is_available %}
+                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary product-detail__add">В корзину</button>
+                </form>
+                <button class="btn btn-outline">♡ В избранное</button>
+            {% else %}
+                <button class="btn btn-outline" disabled>Нет в наличии</button>
+            {% endif %}
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

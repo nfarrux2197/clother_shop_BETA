@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация — LUMÈNE{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <h1 class="auth-title">Регистрация</h1>
+        <p class="auth-sub">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Логин</label>
+                <input type="text" name="username" placeholder="Придумайте логин" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Введите email">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" name="password1" placeholder="Придумайте пароль" required>
+            </div>
+            <div class="form-group">
+                <label>Повторите пароль</label>
+                <input type="password" name="password2" placeholder="Повторите пароль" required>
+            </div>
+            <button type="submit" class="btn btn-primary auth-btn">Зарегистрироваться</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

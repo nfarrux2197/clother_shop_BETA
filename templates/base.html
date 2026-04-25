@@ -23,21 +23,23 @@
     <a href="{% url 'home' %}" class="navbar__logo">LUMÈNE</a>
 
     <ul class="navbar__links">
-        <li><a href="#">Женщинам</a></li>
-        <li><a href="#">Мужчинам</a></li>
-        <li><a href="#">Детям</a></li>
-        <li><a href="#">Новинки</a></li>
-        <li><a href="#">Скидки</a></li>
+        <li><a href="{% url 'gender_section' 'women' %}">Женщинам</a></li>
+        <li><a href="{% url 'gender_section' 'men' %}">Мужчинам</a></li>
+        <li><a href="{% url 'gender_section' 'kids' %}">Детям</a></li>
+        <li><a href="{% url 'new_products' %}">Новинки</a></li>
+        <li><a href="{% url 'sale_products' %}">Скидки</a></li>
     </ul>
 
     <div class="navbar__actions">
         {% if user.is_authenticated %}
-            <a href="#" class="navbar__icon" title="Профиль">👤</a>
+            <a href="{% url 'profile' %}" class="navbar__icon" title="Профиль">👤</a>
         {% else %}
-            <a href="#" class="navbar__icon" title="Войти">🔑</a>
+            <a href="{% url 'login' %}" class="navbar__icon" title="Войти">🔑</a>
         {% endif %}
         <a href="#" class="navbar__icon" title="Избранное">♡</a>
-        <button class="navbar__cart">Корзина (0)</button>
+        <a href="{% url 'cart' %}" class="navbar__cart">
+            Корзина ({% if user.is_authenticated %}{{ user.cart.total_items|default:0 }}{% else %}0{% endif %})
+        </a>
     </div>
 </nav>
 
