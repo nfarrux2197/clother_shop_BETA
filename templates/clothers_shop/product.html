@@ -41,7 +41,9 @@
             <span class="product-detail__price-current">{{ product.price }} ₽</span>
             {% if product.old_price %}
                 <span class="product-detail__price-old">{{ product.old_price }} ₽</span>
-                <span class="product-detail__price-save">Выгода {{ product.discount_percent }}%</span>
+                {% if product.discount_percent %}
+                    <span class="product-detail__price-save">Выгода {{ product.discount_percent }}%</span>
+                {% endif %}
             {% endif %}
         </div>
 

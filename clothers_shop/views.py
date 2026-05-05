@@ -18,9 +18,29 @@ def home(request):
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
     products = Product.objects.filter(category=category, is_available=True)
+
+    # Фильтры
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    is_new = request.GET.get('is_new')
+    on_sale = request.GET.get('on_sale')
+
+    if min_price:
+        products = products.filter(price__gte=min_price)
+    if max_price:
+        products = products.filter(price__lte=max_price)
+    if is_new:
+        products = products.filter(is_new=True)
+    if on_sale:
+        products = products.filter(old_price__isnull=False)
+
     context = {
         'category': category,
         'products': products,
+        'min_price': min_price or '',
+        'max_price': max_price or '',
+        'is_new': is_new,
+        'on_sale': on_sale,
     }
     return render(request, 'clothers_shop/category.html', context)
 
@@ -99,3 +119,17 @@ def remove_from_cart(request, item_id):
     cart_item.delete()
     messages.success(request, 'Товар удалён из корзины!')
     return redirect('cart')
+
+def search(request):
+    query = request.GET.get('q', '')
+    products = Product.objects.filter(
+        name__icontains=query,
+        is_available=True
+    ) if query else Product.objects.none()
+
+    context = {
+        'query': query,
+        'products': products,
+        'section_name': f'Результаты поиска: "{query}"',
+    }
+    return render(request, 'clothers_shop/section.html', context)

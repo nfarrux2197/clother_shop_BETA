@@ -18,6 +18,31 @@
 <section class="section section--white">
     {% if products %}
         <div class="prod-grid">
+            <!-- FILTERS -->
+        <form method="GET" class="filter-form">
+            <div class="filter-group">
+                <label>Цена от</label>
+                <input type="number" name="min_price" value="{{ min_price }}" placeholder="0">
+            </div>
+            <div class="filter-group">
+                <label>Цена до</label>
+                <input type="number" name="max_price" value="{{ max_price }}" placeholder="99999">
+            </div>
+            <div class="filter-group filter-group--check">
+                <label>
+                    <input type="checkbox" name="is_new" {% if is_new %}checked{% endif %}> Новинки
+                </label>
+            </div>
+            <div class="filter-group filter-group--check">
+                <label>
+                    <input type="checkbox" name="on_sale" {% if on_sale %}checked{% endif %}> Скидки
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Применить</button>
+            <a href="?" class="btn btn-outline">Сбросить</a>
+        </form>
+        
+        <div class="prod-grid">
             {% for product in products %}
             <div class="prod-card">
                 <a href="{% url 'product_detail' product.slug %}">

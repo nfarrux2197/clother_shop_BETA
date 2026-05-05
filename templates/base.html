@@ -30,6 +30,11 @@
         <li><a href="{% url 'sale_products' %}">Скидки</a></li>
     </ul>
 
+    <form class="navbar__search" method="GET" action="{% url 'search' %}">
+        <input type="text" name="q" placeholder="Поиск..." class="navbar__search-input">
+        <button type="submit" class="navbar__search-btn">🔍</button>
+    </form>
+
     <div class="navbar__actions">
         {% if user.is_authenticated %}
             <a href="{% url 'profile' %}" class="navbar__icon" title="Профиль">👤</a>
